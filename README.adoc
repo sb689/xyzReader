@@ -1,0 +1,1 @@
+This android application was built as part of Udacity Android nanodegree program. A starter code was provided. Main objective of the project was to apply material design knowledge and polish the project presentation.

@@ -24,7 +24,7 @@
     <color name="ltgray">#ffe0e0e0</color>
 
 
-    <color name="colorPrimary">#26c6da</color>
-    <color name="colorPrimaryDark">#0095a8</color>
-    <color name="colorAccent">#DA3B26</color>
+    <color name="colorPrimary">#37545d</color>
+    <color name="colorPrimaryDark">#0c2b33</color>
+    <color name="colorAccent">#5D4037</color>
 </resources>

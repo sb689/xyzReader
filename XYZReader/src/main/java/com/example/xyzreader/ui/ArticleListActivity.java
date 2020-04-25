@@ -1,24 +1,36 @@
 package com.example.xyzreader.ui;
 
-import android.app.LoaderManager;
+
+import android.app.ActivityOptions;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresFeature;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
+import android.transition.Slide;
+import android.transition.TransitionInflater;
+import android.transition.TransitionManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.example.xyzreader.R;
@@ -39,12 +51,14 @@ import java.util.GregorianCalendar;
  * activity presents a grid of items as cards.
  */
 public class ArticleListActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor>, BookListAdapter.itemClicked {
 
     private static final String TAG = ArticleListActivity.class.toString();
+    public static final String BUNDLE_KEY_ITEM_ID = "bundle_key_item_id";
     private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private View mBookImage;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -56,29 +70,31 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         setContentView(R.layout.activity_article_list);
+
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         ((CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout)).setTitle("");
-
-        //final View toolbarContainerView = findViewById(R.id.toolbar_container);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.d(TAG, "onRefresh called from SwipeRefreshLayout");
-                mIsRefreshing = false;
-                updateRefreshingUI();
+                if(!mIsRefreshing ){
+                    updateRefreshingUI();
+                }
             }
         });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        getLoaderManager().initLoader(0, null, this);
+        LoaderManager.getInstance(this).initLoader(0, null, this);
 
         if (savedInstanceState == null) {
             refresh();
         }
+
+
     }
 
     private void refresh() {
@@ -99,20 +115,20 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
 
-
     private BroadcastReceiver mRefreshingReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())) {
-                Log.d(TAG, ":::::::::::::::  inside onRecive, updating content");
+                Log.d(TAG, "::::::::::::::::::  received update from broadcast receiver");
                 mIsRefreshing = intent.getBooleanExtra(UpdaterService.EXTRA_REFRESHING, false);
+
+                Log.d(TAG, "::::::::::::::::::  mIsRefreshing = " + mIsRefreshing);
                 updateRefreshingUI();
             }
         }
     };
 
     private void updateRefreshingUI() {
-
         mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
     }
 
@@ -122,102 +138,34 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        Adapter adapter = new Adapter(cursor);
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        BookListAdapter adapter = new BookListAdapter(data, this, getApplicationContext());
         adapter.setHasStableIds(true);
         mRecyclerView.setAdapter(adapter);
         int columnCount = getResources().getInteger(R.integer.list_column_count);
         StaggeredGridLayoutManager sglm =
                 new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(sglm);
-
     }
+
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
         mRecyclerView.setAdapter(null);
     }
 
-    private class Adapter extends RecyclerView.Adapter<ViewHolder> {
-        private Cursor mCursor;
+    @Override
+    public void itemClickedAtPosition(int position, View view, long itemId) {
 
-        public Adapter(Cursor cursor) {
-            mCursor = cursor;
-        }
+        Intent intent = new Intent(this, ArticleDetailActivity.class);
+        intent.putExtra(BUNDLE_KEY_ITEM_ID,  itemId);
 
-        @Override
-        public long getItemId(int position) {
-            mCursor.moveToPosition(position);
-            return mCursor.getLong(ArticleLoader.Query._ID);
-        }
+//        startActivity(intent,
+//                ActivityOptions.makeSceneTransitionAnimation(
+//                this, view, view.getTransitionName()).toBundle());
+        startActivity(intent);
 
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = getLayoutInflater().inflate(R.layout.list_item_article, parent, false);
-            final ViewHolder vh = new ViewHolder(view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
-                }
-            });
-            return vh;
-        }
-
-        private Date parsePublishedDate() {
-            try {
-                String date = mCursor.getString(ArticleLoader.Query.PUBLISHED_DATE);
-                return dateFormat.parse(date);
-            } catch (ParseException ex) {
-                Log.e(TAG, ex.getMessage());
-                Log.i(TAG, "passing today's date");
-                return new Date();
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            mCursor.moveToPosition(position);
-            holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
-            Date publishedDate = parsePublishedDate();
-            if (!publishedDate.before(START_OF_EPOCH.getTime())) {
-
-                holder.subtitleView.setText(Html.fromHtml(
-                        DateUtils.getRelativeTimeSpanString(
-                                publishedDate.getTime(),
-                                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-                                DateUtils.FORMAT_ABBREV_ALL).toString()
-                                + "<br/>" + " by "
-                                + mCursor.getString(ArticleLoader.Query.AUTHOR)));
-            } else {
-                holder.subtitleView.setText(Html.fromHtml(
-                        outputFormat.format(publishedDate)
-                        + "<br/>" + " by "
-                        + mCursor.getString(ArticleLoader.Query.AUTHOR)));
-            }
-            holder.thumbnailView.setImageUrl(
-                    mCursor.getString(ArticleLoader.Query.THUMB_URL),
-                    ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
-            holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mCursor.getCount();
-        }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public DynamicHeightNetworkImageView thumbnailView;
-        public TextView titleView;
-        public TextView subtitleView;
-
-        public ViewHolder(View view) {
-            super(view);
-            thumbnailView = (DynamicHeightNetworkImageView) view.findViewById(R.id.thumbnail);
-            titleView = (TextView) view.findViewById(R.id.article_title);
-            subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
-        }
-    }
 }

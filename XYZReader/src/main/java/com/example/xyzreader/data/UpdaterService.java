@@ -36,6 +36,7 @@ public class UpdaterService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Time time = new Time();
 
+        Log.d(TAG, "::::::::::::::::::::::: updateService, inside onHandleIntent");
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         if (ni == null || !ni.isConnected()) {
@@ -43,6 +44,7 @@ public class UpdaterService extends IntentService {
             return;
         }
 
+        Log.d(TAG, ":::::::::::::::::::::::  Fetching data from updateService");
         sendStickyBroadcast(
                 new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_REFRESHING, true));
 
@@ -54,6 +56,7 @@ public class UpdaterService extends IntentService {
         // Delete all items
         cpo.add(ContentProviderOperation.newDelete(dirUri).build());
 
+        Log.d(TAG, ":::::::::::::::::::::::  Fetching data from updateService");
         try {
             JSONArray array = RemoteEndpointUtil.fetchJsonArray();
             if (array == null) {

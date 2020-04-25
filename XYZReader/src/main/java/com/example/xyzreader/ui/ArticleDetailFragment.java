@@ -1,26 +1,26 @@
 package com.example.xyzreader.ui;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
-import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.ShareCompat;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import androidx.palette.graphics.Palette;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 /**
@@ -45,7 +45,6 @@ public class ArticleDetailFragment extends Fragment implements
     private static final String TAG = "ArticleDetailFragment";
 
     public static final String ARG_ITEM_ID = "item_id";
-    private static final float PARALLAX_FACTOR = 1.25f;
 
     private Cursor mCursor;
     private long mItemId;
@@ -53,16 +52,11 @@ public class ArticleDetailFragment extends Fragment implements
     private int mMutedColor = 0xFF333333;
     private ObservableScrollView mScrollView;
     private DrawInsetsFrameLayout mDrawInsetsFrameLayout;
-    private ColorDrawable mStatusBarColorDrawable;
 
     private int mTopInset;
-    private View mPhotoContainerView;
-    private ImageView mPhotoView;
     private int mScrollY;
-    private boolean mIsCard = false;
-    private int mStatusBarFullOpacityBottom;
-
     private ImageView mBookImageViewBlur;
+    private  FloatingActionButton mShareFab;
 
 
 
@@ -95,10 +89,6 @@ public class ArticleDetailFragment extends Fragment implements
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
-
-        mIsCard = getResources().getBoolean(R.bool.detail_is_card);
-        mStatusBarFullOpacityBottom = getResources().getDimensionPixelSize(
-                R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
     }
 
@@ -135,19 +125,13 @@ public class ArticleDetailFragment extends Fragment implements
             @Override
             public void onScrollChanged() {
                 mScrollY = mScrollView.getScrollY();
-                //getActivityCast().onUpButtonFloorChanged(mItemId, ArticleDetailFragment.this);
-                //mPhotoContainerView.setTranslationY((int) (mScrollY - mScrollY / PARALLAX_FACTOR));
-                updateStatusBar();
             }
         });
 
-//        mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
-//        mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
         mBookImageViewBlur = (ImageView) mRootView.findViewById(R.id.iv_book_poster_blur) ;
 
-        mStatusBarColorDrawable = new ColorDrawable(0);
-
-        mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
+        mShareFab =  mRootView.findViewById(R.id.share_fab);
+        mShareFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
@@ -156,26 +140,26 @@ public class ArticleDetailFragment extends Fragment implements
                         .getIntent(), getString(R.string.action_share)));
             }
         });
+        // Initially hide the content view.
+        mShareFab.setVisibility(View.GONE);
 
         bindViews();
-        updateStatusBar();
+        fabAnimateEnter();
         return mRootView;
     }
 
-    private void updateStatusBar() {
-        int color = 0;
-//        if (mPhotoView != null && mTopInset != 0 && mScrollY > 0) {
-//            float f = progress(mScrollY,
-//                    mStatusBarFullOpacityBottom - mTopInset * 3,
-//                    mStatusBarFullOpacityBottom - mTopInset);
-//            color = Color.argb((int) (255 * f),
-//                    (int) (Color.red(mMutedColor) * 0.9),
-//                    (int) (Color.green(mMutedColor) * 0.9),
-//                    (int) (Color.blue(mMutedColor) * 0.9));
-//        }
-        mStatusBarColorDrawable.setColor(color);
-        mDrawInsetsFrameLayout.setInsetBackground(mStatusBarColorDrawable);
+    private void fabAnimateEnter() {
+        int shortAnimationDuration = getResources().getInteger(
+                android.R.integer.config_shortAnimTime);
+        mShareFab.setAlpha(0f);
+        mShareFab.setVisibility(View.VISIBLE);
+        mShareFab.animate()
+                .alpha(1f)
+                .setDuration(3000)
+                .setListener(null);
+
     }
+
 
     static float progress(float v, float min, float max) {
         return constrain((v - min) / (max - min), 0, 1);
@@ -213,8 +197,6 @@ public class ArticleDetailFragment extends Fragment implements
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
 
 
-        //bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
-
         if (mCursor != null) {
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
@@ -239,12 +221,9 @@ public class ArticleDetailFragment extends Fragment implements
                                 + "</font>"));
 
             }
-            //Log.d(TAG, ":::::::::::::::::::::::this is the article body::::::: ");
-            //Log.d(TAG, mCursor.getString(ArticleLoader.Query.BODY));
-            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n\r\n)", "<p>")));
 
-            //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
-
+            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).substring(0,10000).replaceAll("(\r\n\r\n)", "<p>")));
+            // bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n\r\n)", "<p>")));
 
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
@@ -255,9 +234,6 @@ public class ArticleDetailFragment extends Fragment implements
                                 Palette p = Palette.generate(bitmap, 12);
                                 mMutedColor = p.getDarkMutedColor(0xFF333333);
                                 mBookImageViewBlur.setImageBitmap(imageContainer.getBitmap());
-//                                mRootView.findViewById(R.id.meta_bar)
-//                                        .setBackgroundColor(mMutedColor);
-                                //updateStatusBar();
                             }
                         }
 
@@ -280,15 +256,15 @@ public class ArticleDetailFragment extends Fragment implements
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if (!isAdded()) {
-            if (cursor != null) {
-                cursor.close();
+            if (data != null) {
+                data.close();
             }
             return;
         }
 
-        mCursor = cursor;
+        mCursor = data;
         if (mCursor != null && !mCursor.moveToFirst()) {
             Log.e(TAG, "Error reading item detail cursor");
             mCursor.close();
@@ -298,21 +274,13 @@ public class ArticleDetailFragment extends Fragment implements
         bindViews();
     }
 
+
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         mCursor = null;
         bindViews();
     }
 
-    public int getUpButtonFloor() {
-//        if (mPhotoContainerView == null || mPhotoView.getHeight() == 0) {
-//            return Integer.MAX_VALUE;
-//        }
-//
-//        // account for parallax
-//        return mIsCard
-//                ? (int) mPhotoContainerView.getTranslationY() + mPhotoView.getHeight() - mScrollY
-//                : mPhotoView.getHeight() - mScrollY;
-        return 0;
-    }
+
+
 }

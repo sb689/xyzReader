@@ -32,8 +32,6 @@ public class RemoteEndpointUtil {
         try {
             JSONTokener tokener = new JSONTokener(itemsJson);
             Object val = tokener.nextValue();
-            Log.d(TAG, "::::::::::::::::: received JsonArray");
-            Log.d(TAG, val.toString());
 
             if (!(val instanceof JSONArray)) {
                 throw new JSONException("Expected JSONArray");

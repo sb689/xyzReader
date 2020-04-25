@@ -8,5 +8,5 @@
             android:endColor="#55000000"
             android:type="linear"
            />
-        <!--            android:endColor="#4d000000"-->
+
 </shape>

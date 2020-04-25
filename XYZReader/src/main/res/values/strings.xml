@@ -10,7 +10,7 @@
     <string name="up">Up</string>
 
     <string name="list_detail_image_transition">transition_book_photo</string>
-    <string name="tab_title">Book</string>
+    <string name="fab_share_text">Share the article</string>
 
 
 </resources>

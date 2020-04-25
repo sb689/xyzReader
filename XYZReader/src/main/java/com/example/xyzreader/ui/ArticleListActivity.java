@@ -7,42 +7,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresFeature;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.util.Pair;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import androidx.appcompat.widget.Toolbar;
-import android.text.Html;
-import android.text.format.DateUtils;
-import android.transition.Slide;
-import android.transition.TransitionInflater;
-import android.transition.TransitionManager;
+
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.TextView;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
-import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.data.UpdaterService;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * An activity representing a list of Articles. This activity has different presentations for
@@ -55,26 +37,18 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     private static final String TAG = ArticleListActivity.class.toString();
     public static final String BUNDLE_KEY_ITEM_ID = "bundle_key_item_id";
-    private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private View mBookImage;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
-    // Use default locale format
-    private SimpleDateFormat outputFormat = new SimpleDateFormat();
-    // Most time functions can only handle 1902 - 2037
-    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
+
     private boolean mIsRefreshing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+
         setContentView(R.layout.activity_article_list);
 
-
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         ((CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout)).setTitle("");
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
@@ -143,8 +117,8 @@ public class ArticleListActivity extends AppCompatActivity implements
         adapter.setHasStableIds(true);
         mRecyclerView.setAdapter(adapter);
         int columnCount = getResources().getInteger(R.integer.list_column_count);
-        StaggeredGridLayoutManager sglm =
-                new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
+        GridLayoutManager sglm =
+                new GridLayoutManager(this,columnCount);
         mRecyclerView.setLayoutManager(sglm);
     }
 

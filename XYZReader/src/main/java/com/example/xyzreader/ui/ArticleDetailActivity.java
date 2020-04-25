@@ -51,7 +51,7 @@ public class ArticleDetailActivity extends AppCompatActivity
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
                             View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
-        requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+
         setContentView(R.layout.activity_article_detail);
 
         //((CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout)).setTitle("");
@@ -161,7 +161,6 @@ public class ArticleDetailActivity extends AppCompatActivity
         public Fragment getItem(int position) {
             mCursor.moveToPosition(position);
             ArticleDetailFragment fragment =  ArticleDetailFragment.newInstance(mCursor.getLong(ArticleLoader.Query._ID));
-            Log.d(TAG,":::::::::::::::::::; inside getItem, mCalledFromList  = " + mCalledFromList );
             return fragment;
         }
 
@@ -172,8 +171,9 @@ public class ArticleDetailActivity extends AppCompatActivity
 
         @Override
         public CharSequence getPageTitle(int position) {
-            String tabTitle = getString(R.string.tab_title) +  (position + 1);
-            return tabTitle;
+            mCursor.moveToPosition(position);
+            String tabBookTitle = mCursor.getString(ArticleLoader.Query.TITLE);
+            return tabBookTitle;
         }
     }
 }

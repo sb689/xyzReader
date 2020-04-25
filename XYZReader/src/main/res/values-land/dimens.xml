@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- list -->
+    <dimen name="list_item_layout_margin">4dp</dimen>
+    <dimen name="tab_layout_height">60dp</dimen>
+
+    <!-- detail -->
+    <dimen name="detail_article_body_horiz_margin">104dp</dimen>
+    <dimen name="detail_poster_book_title_top_padding">32dp</dimen>
+    <dimen name="detail_article_poster_title_horiz_padding">8dp</dimen>
+    <dimen name="detail_article_poster_padding">8dp</dimen>
+    <dimen name="detail_body_top_margin">32dp</dimen>
+
+</resources>

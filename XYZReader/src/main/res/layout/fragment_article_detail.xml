@@ -14,82 +14,8 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:nestedScrollingEnabled="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <include layout="@layout/book_poster_detail"/>
 
-            <ImageView
-                android:id="@+id/iv_book_poster_blur"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_centerHorizontal="true"
-
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                app:layout_constraintDimensionRatio="16:10"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:transitionName="@string/list_detail_image_transition"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:adjustViewBounds="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/detail_app_bar_height"
-                android:background="@drawable/scrim"
-                app:layout_constraintStart_toStartOf="@id/iv_book_poster_blur"
-                app:layout_constraintEnd_toEndOf="@id/iv_book_poster_blur"
-                app:layout_constraintTop_toTopOf="@id/iv_book_poster_blur"
-                app:layout_constraintBottom_toBottomOf="@id/iv_book_poster_blur"/>
-
-            <TextView
-                android:id="@+id/article_title"
-                style="?android:attr/textAppearanceLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:lineSpacingMultiplier="0.9"
-                android:paddingBottom="@dimen/detail_metabar_title_bottom_padding"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/detail_title_text_size"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/article_byline"
-                app:layout_constraintStart_toStartOf="@id/article_byline"
-                />
-
-            <TextView
-                android:id="@+id/article_byline"
-                style="?android:attr/textAppearanceMedium"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="@id/iv_book_poster_blur"
-                app:layout_constraintStart_toStartOf="@id/iv_book_poster_blur"
-                android:layout_marginBottom="@dimen/detail_book_author_title_margin_bottom"
-                android:layout_marginStart="@dimen/detail_inner_horiz_margin"
-                />
-
-
-                <TextView
-                    android:id="@+id/article_body"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/detail_inner_horiz_margin"
-                    android:layout_marginRight="@dimen/detail_inner_horiz_margin"
-                    android:paddingBottom="@dimen/detail_body_bottom_margin"
-                    android:textColorLink="@color/theme_accent"
-                    android:layout_marginTop="@dimen/detail_body_top_margin"
-                    android:textSize="19sp"
-                    android:justificationMode="inter_word"
-                    android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_book_poster_blur"
-                    android:textColor="@android:color/black"
-                    />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.example.xyzreader.ui.ObservableScrollView>
 
 
@@ -99,10 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:contentDescription="@string/action_share"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_share"
         app:rippleColor="@color/ltgray"
-        app:elevation="6dp"
+        app:elevation="@dimen/fab_elevation"
         />
 
 </com.example.xyzreader.ui.DrawInsetsFrameLayout>

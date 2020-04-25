@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <ImageView
+            android:id="@+id/iv_book_poster_blur"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="16:10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:transitionName="@string/list_detail_image_transition"/>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="16:10"
+        app:layout_constraintStart_toStartOf="@+id/iv_book_poster_blur"
+        app:layout_constraintTop_toTopOf="@+id/iv_book_poster_blur"
+        app:layout_constraintEnd_toEndOf="@+id/iv_book_poster_blur"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_book_poster_blur"
+        android:transitionName="@string/list_detail_image_transition"
+        android:background="@drawable/scrim"/>
+
+
+        <TextView
+            android:id="@+id/article_title"
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:lineSpacingMultiplier="0.9"
+            android:paddingBottom="@dimen/detail_book_title_bottom_padding"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/detail_title_text_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/article_byline"
+            app:layout_constraintStart_toStartOf="@id/article_byline"
+            android:layout_marginStart="@dimen/detail_article_poster_title_horiz_padding"
+            android:layout_marginEnd="@dimen/detail_article_poster_title_horiz_padding"
+            />
+
+        <TextView
+            android:id="@+id/article_byline"
+            style="?android:attr/textAppearanceMedium"
+            android:textSize="@dimen/detail_author_title_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@id/iv_book_poster_blur"
+            app:layout_constraintStart_toStartOf="@id/iv_book_poster_blur"
+            android:layout_marginBottom="@dimen/detail_book_author_title_margin_bottom"
+            android:layout_marginStart="@dimen/detail_article_poster_title_horiz_padding"
+            android:layout_marginEnd="@dimen/detail_article_poster_title_horiz_padding"
+
+            />
+
+
+        <TextView
+            android:id="@+id/article_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_article_body_horiz_margin"
+            android:layout_marginRight="@dimen/detail_article_body_horiz_margin"
+            android:paddingBottom="@dimen/detail_body_bottom_margin"
+            android:textColorLink="@color/theme_accent"
+            android:layout_marginTop="@dimen/detail_body_top_margin"
+            android:textSize="@dimen/detail_body_text_size"
+            android:justificationMode="inter_word"
+            android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_book_poster_blur"
+            android:textColor="@android:color/black"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+

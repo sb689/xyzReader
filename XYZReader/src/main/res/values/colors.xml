@@ -27,4 +27,6 @@
     <color name="colorPrimary">#37545d</color>
     <color name="colorPrimaryDark">#0c2b33</color>
     <color name="colorAccent">#5D4037</color>
+
+    <color name="catalog_item_background">#cfd8dc</color>
 </resources>

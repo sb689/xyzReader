@@ -1,7 +1,6 @@
 package com.example.xyzreader.ui;
 
 
-import android.app.ActivityOptions;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
@@ -39,6 +40,8 @@ public class ArticleListActivity extends AppCompatActivity implements
     public static final String BUNDLE_KEY_ITEM_ID = "bundle_key_item_id";
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private View mViewOverRv;
+    private TextView mErrorMsgTv;
 
 
     private boolean mIsRefreshing = false;
@@ -51,13 +54,20 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         ((CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout)).setTitle("");
 
+        mErrorMsgTv = (TextView) findViewById(R.id.tv_error_msg);
+        mViewOverRv = (View) findViewById(R.id.view_on_rv);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(!mIsRefreshing ){
-                    updateRefreshingUI();
-                }
+//                if(mIsRefreshing){
+//                    Log.d(TAG, "::::::::::::::::::: inside onRefresh, mIsRefreshing = " + "true");
+//                    mViewOverRv.setVisibility(View.VISIBLE);
+//                }else{
+//                    Log.d(TAG, "::::::::::::::::::: inside onRefresh, mIsRefreshing = " + "false");
+//                    updateRefreshingUI();
+//                    mViewOverRv.setVisibility(View.GONE);
+//                }
             }
         });
 
@@ -72,6 +82,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     private void refresh() {
+        Log.d(TAG, "::::::::::::::::::::: StartService called");
         startService(new Intent(this, UpdaterService.class));
     }
 
@@ -80,6 +91,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         super.onStart();
         registerReceiver(mRefreshingReceiver,
                 new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
+
     }
 
     @Override
@@ -92,19 +104,37 @@ public class ArticleListActivity extends AppCompatActivity implements
     private BroadcastReceiver mRefreshingReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())) {
-                Log.d(TAG, "::::::::::::::::::  received update from broadcast receiver");
-                mIsRefreshing = intent.getBooleanExtra(UpdaterService.EXTRA_REFRESHING, false);
 
+            if (UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())) {
+                mIsRefreshing = intent.getBooleanExtra(UpdaterService.EXTRA_REFRESHING, false);
                 Log.d(TAG, "::::::::::::::::::  mIsRefreshing = " + mIsRefreshing);
                 updateRefreshingUI();
+                showResultView();
+
             }
         }
     };
 
+    private void showErrorMsg(){
+        mRecyclerView.setVisibility(View.GONE);
+        mErrorMsgTv.setVisibility(View.VISIBLE);
+    }
+
+    private void showResultView(){
+        mErrorMsgTv.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
     private void updateRefreshingUI() {
+        if(mIsRefreshing){
+            mViewOverRv.setVisibility(View.VISIBLE);
+        }
+        else{
+            mViewOverRv.setVisibility(View.GONE);
+        }
         mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
     }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {

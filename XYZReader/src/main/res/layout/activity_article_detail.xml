@@ -15,26 +15,30 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:contentInsetStart="4dp"
+            app:contentInsetStart="@dimen/detail_logo_inset_start"
             android:layout_gravity="bottom"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="@dimen/detail_toolbar_margin_top"
+
             >
 
             <ImageButton
                 android:id="@+id/action_up"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="@dimen/detail_toolbar_up_button_width"
+                android:layout_height="@dimen/detail_toolbar_up_button_height"
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/up"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_arrow_back" />
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/toolbar_logo_height"
                 android:scaleType="centerCrop"
-                android:src="@drawable/logo" />
+                android:src="@drawable/logo"
+                android:layout_marginStart="@dimen/detail_toolbar_up_button_width"
+                android:adjustViewBounds="true"/>
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -48,8 +52,12 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout_for_details"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/tab_layout_height"
-            app:tabMode="scrollable"/>
+            android:layout_height="@dimen/detail_tab_layout_height"
+            app:tabMode="scrollable"
+            app:tabTextAppearance="@style/CustomTabText"
+            app:tabUnboundedRipple="true"
+            />
+
 
     </androidx.viewpager.widget.ViewPager>
 

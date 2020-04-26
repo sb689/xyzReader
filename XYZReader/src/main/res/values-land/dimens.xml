@@ -2,13 +2,15 @@
 <resources>
     <!-- list -->
     <dimen name="list_item_layout_margin">4dp</dimen>
-    <dimen name="tab_layout_height">60dp</dimen>
+    <dimen name="detail_tab_layout_height">60dp</dimen>
+    <dimen name="list_book_title_padding_top">16dp</dimen>
 
     <!-- detail -->
-    <dimen name="detail_article_body_horiz_margin">104dp</dimen>
-    <dimen name="detail_poster_book_title_top_padding">32dp</dimen>
+    <dimen name="detail_article_body_horiz_margin">88dp</dimen>
+    <dimen name="detail_poster_book_title_top_padding">8dp</dimen>
     <dimen name="detail_article_poster_title_horiz_padding">8dp</dimen>
-    <dimen name="detail_article_poster_padding">8dp</dimen>
     <dimen name="detail_body_top_margin">32dp</dimen>
+    <dimen name="detail_poster_horiz_margin">76dp</dimen>
+    <dimen name="list_book_title_text_size">20sp</dimen>
 
 </resources>

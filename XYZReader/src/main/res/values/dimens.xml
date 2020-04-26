@@ -1,8 +1,8 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 <!--    list activity-->
     <dimen name="app_bar_elevation">4dp</dimen>
-    <dimen name="tab_layout_height">40dp</dimen>
+
     <dimen name="list_side_margin">4dp</dimen>
     <integer name="list_column_count">2</integer>
     <dimen name="app_bar_height">130dp</dimen>
@@ -11,19 +11,29 @@
     <dimen name="list_book_title_padding_start">4dp</dimen>
     <dimen name="list_book_title_padding_top">8dp</dimen>
     <dimen name="list_book_title_padding_bottom">16dp</dimen>
+    <dimen name="toolbar_logo_height">40dp</dimen>
+    <dimen name="toolbar_logo_margin_bottom">4dp</dimen>
+    <dimen name="cardView_layout_margin">0dp</dimen>
+
 
 <!--    detail activity-->
+    <dimen name="detail_tab_layout_height">60dp</dimen>
+
     <dimen name="detail_title_text_size">32sp</dimen>
     <dimen name="detail_author_title_text_size">20sp</dimen>
-    <dimen name="detail_body_text_size">19sp</dimen>
+    <dimen name="detail_body_text_size">18sp</dimen>
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
     <dimen name="detail_article_poster_padding">0dp</dimen>
+    <dimen name="detail_logo_inset_start">4dp</dimen>
+    <dimen name="detail_toolbar_up_button_width">24dp</dimen>
+    <dimen name="detail_toolbar_up_button_height">24dp</dimen>
+    <dimen name="detail_toolbar_margin_top">30dp</dimen>
 
     <dimen name="detail_app_bar_height">90dp</dimen>
     <dimen name="detail_poster_book_title_top_padding">0dp</dimen>
     <dimen name="detail_poster_horiz_margin">0dp</dimen>
     <dimen name="detail_book_author_title_margin_bottom">24dp</dimen>
-    <dimen name="detail_article_body_horiz_margin">16dp</dimen>
+    <dimen name="detail_article_body_horiz_margin">32dp</dimen>
     <dimen name="detail_body_top_margin">24dp</dimen>
     <dimen name="detail_body_bottom_margin">24dp</dimen>
     <dimen name="detail_book_title_bottom_padding">4dp</dimen>
@@ -35,5 +45,8 @@
 <!--    fab dimen-->
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+    <dimen name="design_fab_image_size" tools:override="true">24dp</dimen>
+    <dimen name="design_fab_size_normal" tools:override="true">56dp</dimen>
 
 </resources>

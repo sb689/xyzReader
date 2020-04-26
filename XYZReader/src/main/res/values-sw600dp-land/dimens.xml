@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="list_column_count">3</integer>
+    <dimen name="cardView_layout_margin">16dp</dimen>
+
+
+    <dimen name="detail_poster_horiz_margin">104dp</dimen>
+    <dimen name="detail_article_body_horiz_margin">120dp</dimen>
+</resources>

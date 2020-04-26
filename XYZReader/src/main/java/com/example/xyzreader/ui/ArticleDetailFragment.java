@@ -150,12 +150,12 @@ public class ArticleDetailFragment extends Fragment implements
 
     private void fabAnimateEnter() {
         int shortAnimationDuration = getResources().getInteger(
-                android.R.integer.config_shortAnimTime);
+               R.integer.fab_animTime);
         mShareFab.setAlpha(0f);
         mShareFab.setVisibility(View.VISIBLE);
         mShareFab.animate()
                 .alpha(1f)
-                .setDuration(3000)
+                .setDuration(shortAnimationDuration)
                 .setListener(null);
 
     }

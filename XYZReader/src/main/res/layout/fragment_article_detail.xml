@@ -28,6 +28,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_share"
         app:rippleColor="@color/ltgray"
+        android:scaleType="centerCrop"
         app:elevation="@dimen/fab_elevation"
         />
 

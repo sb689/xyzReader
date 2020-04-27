@@ -57,19 +57,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         mErrorMsgTv = (TextView) findViewById(R.id.tv_error_msg);
         mViewOverRv = (View) findViewById(R.id.view_on_rv);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-//                if(mIsRefreshing){
-//                    Log.d(TAG, "::::::::::::::::::: inside onRefresh, mIsRefreshing = " + "true");
-//                    mViewOverRv.setVisibility(View.VISIBLE);
-//                }else{
-//                    Log.d(TAG, "::::::::::::::::::: inside onRefresh, mIsRefreshing = " + "false");
-//                    updateRefreshingUI();
-//                    mViewOverRv.setVisibility(View.GONE);
-//                }
-            }
-        });
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         LoaderManager.getInstance(this).initLoader(0, null, this);
@@ -164,10 +152,6 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         Intent intent = new Intent(this, ArticleDetailActivity.class);
         intent.putExtra(BUNDLE_KEY_ITEM_ID,  itemId);
-
-//        startActivity(intent,
-//                ActivityOptions.makeSceneTransitionAnimation(
-//                this, view, view.getTransitionName()).toBundle());
         startActivity(intent);
 
     }

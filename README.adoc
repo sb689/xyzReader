@@ -1,3 +1,31 @@
+## Application Overview
+
+<table>
+  <tr>
+    <td>Main Screen (phone layout)</td>
+     <td>Detail Screen (phone layout)</td>
+  </tr>
+  <tr>
+    <td><img src="/screenshots/Screenshot_1593575716.png"></td>
+    <td><img src="/screenshots/Screenshot_1593576047.png"></td>
+   </tr>
+ </table>
+
+ <table>
+ <tr>
+ <td>Main screen (tablet layout landscape) </td>
+ </tr>
+ <tr>
+ <td><img src="/screenshots/Screenshot_1593576167.png"> </td>
+ </tr>
+ <tr>
+ <td>Detail screen (tablet layout landscape) </td>
+ </tr>
+ <tr>
+ <td><img src="/screenshots/Screenshot_1593576179.png"> </td>
+ </tr>
+ </table>
+
 ## Project Overview
 
 This is an android application that mock RSS feed reader 

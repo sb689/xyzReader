@@ -86,7 +86,11 @@
                 android:text="@string/network_error_msg"
                 android:visibility="gone"
                 android:textSize="20sp"/>
+
+
         </FrameLayout>
+
+
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

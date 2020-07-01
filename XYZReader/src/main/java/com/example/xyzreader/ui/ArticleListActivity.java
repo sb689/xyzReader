@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -44,6 +45,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private TextView mErrorMsgTv;
 
 
+
     private boolean mIsRefreshing = false;
 
     @Override
@@ -57,6 +59,12 @@ public class ArticleListActivity extends AppCompatActivity implements
         mErrorMsgTv = (TextView) findViewById(R.id.tv_error_msg);
         mViewOverRv = (View) findViewById(R.id.view_on_rv);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
+            }
+        });
 
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -115,11 +123,14 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     private void updateRefreshingUI() {
         if(mIsRefreshing){
+
             mViewOverRv.setVisibility(View.VISIBLE);
         }
         else{
+
             mViewOverRv.setVisibility(View.GONE);
         }
+        Log.d(TAG, "::::::::::::::::::  inside updateRefreshingUI, setRefreshing = " + mIsRefreshing);
         mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
     }
 

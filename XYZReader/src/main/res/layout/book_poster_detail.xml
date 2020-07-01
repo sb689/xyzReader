@@ -47,9 +47,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/article_byline"
             app:layout_constraintStart_toStartOf="@id/article_byline"
-            android:layout_marginStart="@dimen/detail_article_poster_title_horiz_padding"
+
             android:layout_marginEnd="@dimen/detail_article_poster_title_horiz_padding"
             />
+
 
         <TextView
             android:id="@+id/article_byline"

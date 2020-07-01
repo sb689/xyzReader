@@ -6,8 +6,8 @@
      <td>Detail Screen (phone layout)</td>
   </tr>
   <tr>
-    <td><img src="/screenshots/Screenshot_1593575716.png"></td>
-    <td><img src="/screenshots/Screenshot_1593576047.png"></td>
+    <td><img src="/screenshots/Screenshot_1593575716.png" width=270 height=480></td>
+    <td><img src="/screenshots/Screenshot_1593576047.png" width=270 height=480></td>
    </tr>
  </table>
 
@@ -25,7 +25,7 @@
  <td>Detail screen (tablet layout landscape) </td>
  </tr>
  <tr>
- <td><img src="/screenshots/Screenshot_1593576179.png"> </td>
+ <td><img src="/screenshots/Screenshot_1593632567.png"> </td>
  </tr>
  </table>
 

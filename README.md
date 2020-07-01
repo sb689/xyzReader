@@ -18,6 +18,9 @@
  <tr>
  <td><img src="/screenshots/Screenshot_1593576167.png"> </td>
  </tr>
+</table>
+
+<table>
  <tr>
  <td>Detail screen (tablet layout landscape) </td>
  </tr>
